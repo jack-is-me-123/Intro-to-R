@@ -615,7 +615,8 @@ assign(df_name, df_untidy)
 # FINAL EXERCISE
 
 # Import some messy data of your own. Work out how to get it working in R as a 
-# tidy data frame (if you need to do one or two bits in Excel first, that's okay)
+# tidy data frame (if you need to do one or two bits in Excel first, that's
+# okay)
 
 # Further resources ----
 
