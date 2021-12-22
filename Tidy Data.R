@@ -18,17 +18,20 @@
 # A reminder that tidyverse contains a suite of packages such as dplyr,
 # ggplot2 (for plotting).
 
-# install packages first if need be with:
-#   install.packages("tidyverse")
-#   install.packages("tidyr")
-#   install.packages("readr")
-#   install.packages("lubridate")
-#   install.packages("readxl")
+# The code below is a nice way of loading packages - it will only install a
+# package if it's not already installed. This is useful when reusing scripts.
+# It doesn't matter if someone is coming to this script with the packages 
+# installed or not - if they're not installed, they will be - and if they're
+# pre-installed then the time consuming installation is skipped.
 
-library(readxl) # for reading excel data
-library(tidyverse) # suite of packages for manipulating and plotting data
-library(tidyr) # functions for tidying data
+if (!require("readxl")) install.packages("readxl")
+library("readxl")
 
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("tidyr")) install.packages("tidyr")
+library("tidyr")
 
 # What is Tidy Data? ----
 
