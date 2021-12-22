@@ -8,11 +8,10 @@
 # Date: July 2020
 
 
-# It's good practice to write your name and the date at the beginning of your script,
-# as well as a title and short description of what the script
-# will set out to do. 
-# You can "comment out" anything that you want to write in the script 
-# that you don't want to be part of your code by using '#'. This basicaly tells
+# It's good practice to write your name and the date at the beginning of your
+# script, as well as a title and short description of what the script will set
+# out to do. You can "comment out" anything that you want to write in the script
+# that you don't want to be part of your code by using '#'. This basically tells
 # R to ignore everything that come after a "#".
 
 # You can also make your code easier to navigate by putting four dashes '-' 
@@ -29,11 +28,10 @@
 
 # Packages ----
 
-# One of the things that makes R so versatile is its active developer
-# community. Any R user is able to create new R functions and share them
-# with other R users to extend R's capability. These user generated functions
-# are shared in sets known as "packages" which have to be installed on your R 
-# system to use.
+# One of the things that makes R so versatile is its active developer community.
+# Any R user is able to create new R functions and share them with other R users
+# to extend R's capability. These user generated functions are shared in sets
+# known as "packages" which have to be installed on your R system to use.
 
 # If you're using R for the first time, you will have to install packages with 
 # the following code. We'll be installing the tidyverse, which is a large suite
@@ -45,9 +43,9 @@
 install.packages("tidyverse")
 install.packages("RODBC")
 
-# Once the packages are installed on your machine you need to load them in.
-# You can do this using the 'library' function .Try running the below bit of 
-# code. Have a look at the console (below) to see what happens. 
+# Once the packages are installed on your machine you need to load them in. You
+# can do this using the 'library' function .Try running the below bit of code.
+# Have a look at the console (below) to see what happens.
 
 library(dplyr) #manipulating data
 library(readr) #reading in data
@@ -78,17 +76,17 @@ library(ggplot2) #creating plots
 1 / 200 * 30
 3^3
 
-# Try out some of the other basic arithmetic operators. It's good to know
-# that R can do this, as at some point you might want to create a new column 
-# in your data set using your own calculation, for
-# example, to make a proportion variable.
+# Try out some of the other basic arithmetic operators. It's good to know that R
+# can do this, as at some point you might want to create a new column in your
+# data set using your own calculation, for example, to make a proportion
+# variable.
 
 # Objects in R ----
 
-# Another basic concept in R is the creation of an object. 
-# Objects allow you to store information, so that they can be used later.
-# An object can be a single value, a data frame, a vector, a value etc. (we'll
-# touch on these different data types throughout the course).
+# Another basic concept in R is the creation of an object. Objects allow you to
+# store information, so that they can be used later. An object can be a single
+# value, a data frame, a vector, a value etc. (we'll touch on these different
+# data types throughout the course).
 
 # When creating an object in R, we use the assignment operator '<-' 
 # e.g. object_name <- value
@@ -157,9 +155,9 @@ print(a_vector)
 # Let's load in some data that we can play with.
 # It's a csv file, so we can use 'read_csv' from the readr package. We first set
 # our working directory. This is a way of telling R where in our file structure
-# we're operating. When we do this, it means that we wont have to give full
-# file paths when loading in data, but instead can just direct from the location
-# of the working directory.
+# we're operating. When we do this, it means that we wont have to give full file
+# paths when loading in data, but instead can just direct from the location of
+# the working directory.
 
 # To do this, we're going to go to the 'Session' button in the ribbon menu and
 # select 'Set Working Directory > To Source File Location'. This will set our
@@ -172,9 +170,9 @@ print(a_vector)
 gapminder <- readr::read_csv(file = "data/gapminder.csv")
 
 # This dataframe object is now loaded in our global environment (top right).
-# read_csv() uses the first line of the data for the column names 
-# If we were working with a csv that didn't have named columns, we could
-# choose to make the first row of the csv a row of data by setting the argument
+# read_csv() uses the first line of the data for the column names. 
+# If we were working with a csv that didn't have named columns, we could choose
+# to make the first row of the csv a row of data by setting the argument
 # col_names = FALSE - so the whole function would read:
 # gapminder <- readr::read_csv(file = "X.csv", col_names = FALSE)
 
@@ -191,8 +189,8 @@ tail(gapminder)
 print(gapminder)
 
 # print ALL of the data to the console by setting an infinite limit to print()
-# (This is not recommended in most circumstances unless you want to fill up
-# your console very quickly)
+# (This is not recommended in most circumstances unless you want to fill up your
+# console very quickly)
 print(gapminder, n = Inf)
 
 # view data
@@ -201,8 +199,8 @@ View(gapminder) # note the capital 'V'
 # summary {base} stats
 base::summary(gapminder)
 
-# You can also inspect a single variable by using the $ sign after the 
-# dataframe to specify a single variable
+# You can also inspect a single variable by using the $ sign after the dataframe
+# to specify a single variable
 base::summary(gapminder$lifeExp)
 
 # We can use the function unique() to get unique values of a certain variable
@@ -237,10 +235,10 @@ print(gapminder [2,3])
 # a data frame.
 
 # 2 The subsequent arguments describe what to do with the object,
-# using the variable names (without quotes). This can include dropping variables,
-# adding a new variable (based on other variables), filtering out observations
-# (rows) based on some criteria, or rearranging your data (for example from 
-# highest to lowest of a variable).
+# using the variable names (without quotes). This can include dropping
+# variables, adding a new variable (based on other variables), filtering out
+# observations (rows) based on some criteria, or rearranging your data (for
+# example from highest to lowest of a variable).
 
 # 3 The result is a new object. This object is either printed directly
 # into the console (the panel below this script), OR, if it is saved as a new
@@ -260,8 +258,8 @@ countries_pop <- dplyr::select(
 View(countries_pop)
 
 # We can also put a "-" sign in front of variables we don't want to keep in our
-# daaframe. doing this tells R that we want to keep all the variables except for 
-# the variable(s) we select out.
+# dataframe. doing this tells R that we want to keep all the variables except
+# for the variable(s) we select out.
 select(
   gapminder,
   -gdpPercap  # columns to drop
@@ -320,7 +318,7 @@ Asia_2007 <- filter(gapminder, year == 2007 & continent == "Asia")
 filter(gapminder, continent != "Asia")
 
 # filter on three countries and one year
-# %in% lets us match on multiple valu
+# %in% lets us match on multiple value
 filter(
   gapminder,
   country %in% c("Albania", "France", "Norway") & year == 2002 
@@ -328,7 +326,8 @@ filter(
 
 # or a numeric example with lots of conditions (try to figure out exactly
 # what this function is doing without looking at the output )
-filter(gapminder, year == 2002 & pop >= 100000000 | year == 2002 & pop <= 1000000)
+filter(gapminder,
+       year == 2002 & pop >= 100000000 | year == 2002 & pop <= 1000000)
 
 # These may seem like arbitrary tasks here, but you can imagine
 # how the filter and select functions could be used together to quickly
@@ -360,7 +359,8 @@ gapminder<- dplyr::mutate(
 base::summary(gapminder$gdp)
 
 
-# You can also mutate with an if_else() function nested inside your mutate function:
+# You can also mutate with an if_else() function nested inside your mutate
+# function:
 mutate(
   Asia_2007,
   healthy = if_else(
@@ -394,9 +394,9 @@ mutate(
 
 # Write a mutate function that takes the Asia_2007 data frame and classifies 
 # countries by whether they have bad, okay, good, or great living conditions.
-# What variables would you use for this?  (Remember the case_when function,
-# and play around with the and/or operators to add logical conditions to a test
-# "&" "|")
+# What variables would you use for this?  (Remember the case_when function, and
+# play around with the and/or operators to add logical conditions to a test "&"
+# "|")
 
 #ARRANGE----
 
@@ -506,7 +506,8 @@ gapminder_filter <- filter(gapminder_join, year == 2007)
 
 gapminder_select <- select(gapminder_filter, -status, -year)
 
-gapminder_mutate <- mutate(gapminder_select, happiness = gdpPercap * civ_rights / 10000)
+gapminder_mutate <-
+  mutate(gapminder_select, happiness = gdpPercap * civ_rights / 10000)
 
 # In other words, you might end up creating lots of intermediate 
 # objects - cluttering up your workspace and scripts, and filling up memory.
@@ -516,7 +517,9 @@ gapminder_mutate <- mutate(gapminder_select, happiness = gdpPercap * civ_rights 
 # This is because R essentially reads from the inner-most function out (like
 # functions in Excel or in another coding language).
 
-gapminder_mutate <- mutate(select(filter(gapminder_join, year == 2007), -status, -year), happiness = gdpPercap * civ_rights / 10000)
+gapminder_mutate <-
+  mutate(select(filter(gapminder_join, year == 2007), -status, -year),
+         happiness = gdpPercap * civ_rights / 10000)
 
 # The dplyr package has a very useful feature called "pipes" (written as %>%).
 # With pipes, you can take the output of one function
@@ -528,7 +531,7 @@ gapminder_mutate <- mutate(select(filter(gapminder_join, year == 2007), -status,
 # We can use the pipe to do the same thing we did above
 
 gapminder_piped <- gapminder_join %>%
-  filter(year == 2007)%>% # we don't need to put the data argument in this function as it's been piped in
+  filter(year == 2007) %>% # we don't need to put the data argument in this function as it's been piped in
   select(-status, -year) %>%
   mutate(happiness = gdpPercap * civ_rights / 10000)
 

@@ -315,8 +315,8 @@ View(cities)
 
 # Barchart----
 
-# We're now going to create a bar chart using the population variables. The chart 
-# will show the difference in population from 2015 to 2016 by city
+# We're now going to create a bar chart using the population variables. The
+# chart will show the difference in population from 2015 to 2016 by city
 
 
 # you'll see in the environment that there are 63 observations (or rows) and 48
@@ -358,8 +358,8 @@ cities %>%
 ggplot(data = cities_pop, aes(x = City, y = diff)) +
   geom_bar(stat = "identity") +
   theme_classic() +
-  labs(title = "2015-2016 Population changes by city", 
-       subtitle = "*Cities with a population change of 5,000 or more are included", 
+  labs(title = "2015-2016 Population changes by city",
+       subtitle = "*Cities with a population change of 5,000 or more are included",
        caption = "Source: Centre for Cities.org") +
   xlab("City") +
   ylab("Difference between 2015 and 2016")
@@ -374,11 +374,12 @@ ggplot(data = cities_pop, aes(x = City, y = diff)) +
 # Finally we can change the colour of our bars with the "fill" argument inside
 # the geom_bar function.
 
-my_chart <- ggplot(data = cities_pop, aes(x = reorder(City, -diff), y = diff)) +
+my_chart <-
+  ggplot(data = cities_pop, aes(x = reorder(City,-diff), y = diff)) +
   geom_bar(stat = "identity", fill = "light blue") +
   theme_classic() +
   labs(title = "2015-2016 Population changes by city",
-       subtitle = "*Cities with a population change of 5,000 or more are included", 
+       subtitle = "*Cities with a population change of 5,000 or more are included",
        caption = "Source: Centre for Cities.org") +
   xlab("City") +
   ylab("Difference between 2015 and 2016") +
