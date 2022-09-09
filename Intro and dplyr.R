@@ -38,7 +38,8 @@
 # of packages that contain lots of useful stuff for data manipulation, data
 # visualisation, reading in data etc.
 
-# NB DO NOT RUN THIS EVERYTIME. The install can take 10 minutes or so.
+# NB You don't have to run this every time: installation can take a couple of 
+# minutes depeneding on the size of the package.
 
 install.packages("tidyverse")
 install.packages("RODBC")
