@@ -1,16 +1,14 @@
-###  Workshop 4 - graphs and ggplot2
+###  Workshop 3 - graphs and ggplot2
 
 # Author: Jack Marks
 # Date: September 2020
 
-# This workshop will look at how we can use R to visualise data, drawing
-# graphs and plots to visualise data distributions. 
-# These can be used to reliably and quickly produce sets of graphs from data
-# that comes in in a regular format. 
-# Graphs can also be useful for 
-# We will be using the package ggplot2 for this, but will touch on some other 
-# resources that exist for plotting data in R, including base R and the plotly
-# package.
+# This workshop will look at how we can use R to visualise data, drawing graphs
+# and plots to visualise data distributions. These can be used to reliably and
+# quickly produce sets of graphs from data that comes in in a regular format.
+# Graphs can also be useful for We will be using the package ggplot2 for this,
+# but will touch on some other resources that exist for plotting data in R,
+# including base R and the plotly package.
 
 #The ggplot2 cheat sheet can be useful in understanding how ggplot works. 
 #Cheat sheets are available for most packages and a really good 'desk aids'. 
@@ -24,6 +22,20 @@ library(ggthemes) # includes a range of extra themes for plots
 library(RColorBrewer) # includes a range of additional colour palettes
 library(plotly) # package for producing interactive plots
 
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggthemes")) install.packages("ggthemes")
+library("ggthemes") # includes a range of extra themes for plots
+
+if (!require("RColorBrewer")) install.packages("RColorBrewer")
+library("RColorBrewer") # includes a range of additional colour palettes
+
+if (!require("plotly")) install.packages("plotly")
+library("plotly") # package for producing interactive plots
+
+
+
 
 # We're going to work with some data we've used in previous workshops
 
@@ -33,7 +45,7 @@ exams <- read_csv("data/exams.csv")
 # What is ggplot2 ----
 
 # ggplot2 is a package that has a whole range of data visualisation tools. The 
-# "gg" stands for "grammar of graphics". This is a design philosphy to making
+# "gg" stands for "grammar of graphics". This is a design philosophy to making
 # plots where you build graphs by layering graphical elements on top of
 # eachother. To do this, we use a '+' rather than a pipe. Think about it as 
 # placing down a canvas and then adding layers on top.
@@ -42,7 +54,7 @@ exams <- read_csv("data/exams.csv")
 # qplot() let's us make plots very quickly with very few arguments. It can be a
 # useful tool when playing around with data to make sure that data makes sense.
 # It can sometimes be the quickest way to get to know your data or identify 
-# if errors have occured, or if you have any outliers.
+# if errors have occurred in processing, or if you have any outliers.
 
 # Let's use qplot() to look at some exam scores
 qplot(data = exams, x = math)
@@ -54,20 +66,21 @@ qplot(data = exams, x = math)
 # Let's see what happens when we run qplot on two variables
 qplot(data = exams, x = english, y = math)
 
-# It's important to note that as we create plots, we can toggle between them
-# with the arrows in the plot viewer. Having too many plots or elements in the 
-# plots or viewer window can slow down R studio a bit so it can be useful to 
-# clear objects from time to time. You can delete a single object from the 
-# viewer pane by clicking the "X" next to "Export". OR you can clear all objects
-# in the viewer pane by selecting the brush.
+# When we create plots in R studio, they pop up in the bottom right. We can go 
+# back to our file viewer by select on it in the ribbon next to "Plots". We can
+# also export our plot (or copy it to our clipboard) with the "Export" drop down,
+# and we can remove our plots with the brush icon.
 
 # R assumes we want a scatter plot, which is a useful way for us to see how 
 # two variables interact.
 # We can even add a colour as a third parameter
-qplot(data = exams, x = english, y = math, colour = history)
+qplot(data = exams, x = english, y = math, colour = lunch)
 
 # Quick challenge:
 # Use the qplot() function to explore the gapminder dataset
+
+
+
 
 # ggplot2: single variable graphics ----
 
@@ -135,10 +148,10 @@ ggplot(data = exams, aes(x=math)) +
   geom_density(fill = "#76a8d5", colour = "#76a8d5") +
   theme_classic()
 
-# Here we'll just use the "classic" theme for simplicity, but there are loads of 
-# fun themes out there. Some newspapers, businesses and government departments 
-# have even created themes that let them quickly produce graphics in their own
-# house style which you can borrow.
+# Here we've just use dthe "classic" theme for simplicity, but there are loads
+# of fun themes out there. Some newspapers, businesses and government
+# departments have even created themes that let them quickly produce graphics in
+# their own house style which you can borrow.
 
 ggplot(data = exams, aes(x=math)) + 
   geom_histogram(fill = "#f08080", colour = "#f08080") +
@@ -152,6 +165,11 @@ ggplot(data = exams, aes(x=math)) +
 
 ggplot(data = exams, aes(x=math)) + 
   geom_density(fill = "#76a8d5", colour = "#76a8d5", alpha = 0.4) +
+  theme_classic()
+
+
+ggplot(data = exams, aes(x=math, y = english)) + 
+  geom_point(fill = "#76a8d5", colour = "#76a8d5", alpha = 0.4) +
   theme_classic()
 
 # The geom_histogram and geom_density functions are quite flexible, allowing us
@@ -172,6 +190,10 @@ ggplot(data = exams,
 #   - Try using some groupings to better understand how different variables
 #     interact.
 
+
+
+
+
 # Pipes, data manipulations, and ggplot2 ----
 
 # It would be useful to produce this kind of graph for the results in different
@@ -180,14 +202,14 @@ ggplot(data = exams,
 # tidy dataset into a longer dataset. To do this, we're going to play around
 # with piping data manipulations into a ggplot() call.
 
-# What we want to do is use the gather() function we looked at in the Tidy Data
+# What we want to do is use the pivot_longer() function we looked at in the Tidy Data
 # workshop. We can use this to "lengthen" the data, collapsing the 3 test score
 # variables into 1 variable, with the effect of tripling the length of the data
 # set. We can then use this pivoted data to run a density plot that's grouped by
 # subject.
 
 exams %>% 
-  gather(key = "subject", value = "score", 4:6) %>%
+  pivot_longer(cols = 4:6, names_to = "subject", values_to = "score") %>%
   ggplot(aes(x=score, group = subject, fill = subject)) + 
   geom_density(alpha = 0.4) +
   theme_classic()
@@ -196,6 +218,9 @@ exams %>%
 # Create a density plot using the gapminder dataset where the data is filtered
 # for the most recent year and grouped by continent, showing the distribution
 # of gdpPercap in different continents.
+
+
+
 
 
 # Multi-variable plots ----
@@ -210,7 +235,7 @@ ggplot(data = exams, aes(x = english, y = math)) +
 # We can add more variables to this by adding more arguments to aesthetic.
 # We can add colour and shape as variables
 
-ggplot(data = exams, aes(x = english, y = math, colour  = history,
+ggplot(data = exams, aes(x = english, y = math, colour  = lunch,
                          shape = test_prep_course)) +
   geom_point() +
   theme_classic()
@@ -230,8 +255,12 @@ ggplot(data = exams, aes(x = english, y = math,
 
 
 # Exercise:
-# Play around with different palettes in rcolourbrewer. Try mapping different 
-# variables to play with sequential as well as categorical variables.
+# create a dotplot that shows the relationship between life expectancy and 
+# gdp per capita in the gapminder data set. Consider different filters and 
+# groupings of the data set (eg filter for a year, group by continent)
+
+
+
 
 
 # Over-lapping data ----
@@ -264,8 +293,7 @@ ggplot(data = exams, aes(x = english, y = math,
 # you can use a different type of plot, a density plot.
 
 ggplot(data = exams, aes(x = english, y = math)) +
-  geom_bin2d(bins = 50) +
-  scale_fill_brewer(type = "seq", n.breaks = 20, palette = 1)
+  geom_bin2d(bins = 50)
 
 ggplot(data = exams, aes(x = english, y = math) ) +
   geom_bin2d(bins = 25) +
@@ -274,6 +302,28 @@ ggplot(data = exams, aes(x = english, y = math) ) +
 
 # Though not particularly useful here, density plots can be a very useful tool
 # when dealing with very large datasets.
+
+# Time series plots ----
+
+# ggplot can also be used for time series plots, with the geom_line function.
+# Similar to grouping histograms, we just need to group together the categories
+# which will be drawn along the same line and define our x axis as our year, 
+# and our y variable as our variable of interest.
+
+gapminder %>% filter(country %in% c("United Kingdom", "Ireland", "France", 
+                                    "Germany", "Italy", "Spain", "")) %>%
+ggplot( aes(x=year, y=gdpPercap, group=country, color=country)) +
+  geom_line() 
+
+# Challenge ----
+
+# Use a piped operation to get the average life expectancy for each continent
+# over time and create a line chart of it.
+# Try applying different aesthetic arguments or themes to make a chart you like.
+
+
+
+
 
 # Saving plots as objects ----
 
@@ -313,7 +363,7 @@ cities <- read_csv("data/cities.csv", locale = locale(encoding="latin1"))
 View(cities)
 
 
-# Barchart----
+# Barchart ----
 
 # We're now going to create a bar chart using the population variables. The
 # chart will show the difference in population from 2015 to 2016 by city
@@ -387,7 +437,7 @@ my_chart <-
 
 my_chart
 
-#CHALLENGE 4----
+#Challenge ----
 
 # create a barchart that shows the cities that have a mean house price in
 # 2017 of less than ?145,000.
@@ -396,18 +446,52 @@ my_chart
 # rename function in dplyr
 
 
+# Bridges to interactive plots ----
+
+# R also offers fantastic capability to produce interactive plots that can be
+# shared as html files. These can be built from scratch using packages like the
+# plotly package, or special functions exist to take a static plot built in 
+# ggplot2 and convert it into an interactive plot. This can give you or users a
+# lot more flexibility in how you explore data. 
+
+# Let's start by making a dot plot of countries with their gdp per capita, life 
+# expectancy, and population size, and continent all contained
+
+country_plot <- gapminder %>% filter(year == 2007) %>%
+                  ggplot( aes(x = gdpPercap, y = lifeExp, fill = continent, 
+                              color = continent, size = pop)) +
+                  geom_point() +
+                  scale_x_log10() # this converts the x axis to a log scale to create an easier
+                                  # to read chart.
+
+# now let's take our country_plot and use the ggplotly() function to convert it
+# into an interactive chart
+ggplotly(country_plot)
+
+# We can now explore our data interatively. However, while ggplotly can be used 
+# to quickly convert static plots to interactive plots, to truly explore the
+# depth of what can be achieved with interactive plots, it's better to build 
+# interactive plots from scratch. 
+
+# Challenge ----
+
+# Create other plots with ggplot2 exploring the gapminder data set and see if 
+# and how the ggplotly() function translates them into interactive charts.
+
 
 # Extra Material ----
 
-# 1) This coffee and coding workshop looks at how to produce a number of graphics
-# in ggplot2 and export them to powerpoint slides :
-# https://github.com/DataS-DHSC/coffee-and-coding/tree/master/2019-06-28 Graphs to PowerPoint
-
-# 2) The R Graph Gallery: https://www.r-graph-gallery.com/index.html
+# 1) The R Graph Gallery: https://www.r-graph-gallery.com/index.html
 # This index is an excellent place to see everything that ggplot2 has to offer
 # It shows an example of virtually every type of graph you could name
 # and has example code to produce each type. VERY useful to scrounge off 
 # and speed up your workflow.
+
+# 2) Similar to the R Graph Gallery, this gallery demonstrates a lot of what's 
+# possivle with plotly: https://plotly.com/r/
+
+# ALSO note that the dygraphs package was designed to create interactive time
+# series charts: https://dygraphs.com/
 
 # 3) Mapping Australia's Plankton (workshop): http://www.seascapemodels.org/data/data-wrangling-spatial-course.html
 # This workshop takes a few hours to go through but it's really useful to

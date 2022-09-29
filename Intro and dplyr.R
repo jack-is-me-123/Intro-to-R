@@ -94,7 +94,7 @@ library(ggplot2) #creating plots
 
 an_object <- 123
 
-# R has five basic or atomic classes of objects:
+# R has five basic types or "atomic classes" of objects:
 #  character
 #  numeric (real numbers)
 #  integer (whole numbers)
@@ -151,6 +151,18 @@ names(a_vector) <- c("Animal Type", "Profession", "Grade")
 # and 'maritime mascot' is assigned to the profession 
 print(a_vector)
 
+
+# Different object classes have different advantages and use cases based on the
+# the trade-off between their flexibility and their simplicity. For example, we
+# could express a series of yes or no answers from a survey as a character
+# vector (with answers written as "yes" or "no"), or we could save it as a
+# logical vector (TRUE/FALSE). The logical vector will be more memory efficient,
+# meaning that output files can be smaller and processing of code can be
+# quicker. You wont have to spend much time thinking about memory efficiency as
+# you start learning R, but it's useful to have a basic sense of what things
+# will be more efficient.
+
+
 # LOADING IN DATA ----
 
 # Let's load in some data that we can play with.
@@ -166,7 +178,8 @@ print(a_vector)
 # to load in our dataset, we just need to navigate from here, rather than from
 # the beginning of the file structure.
 
-# Let's load in some data.
+# Let's load in some data. (note, you may need to change the file path to 
+# match where you have saved the data)
 
 gapminder <- readr::read_csv(file = "data/gapminder.csv")
 
@@ -211,7 +224,7 @@ base::unique(gapminder$country)
 # This is done in the format: dataframe[row,column]
 # if we leave either the row or column blank, we get the whole column or row.
 
-print(gapminder[,4])
+print(gapminder[4,])
 print(gapminder [2,3])
 
 # Manipulating data ----
@@ -233,7 +246,7 @@ print(gapminder [2,3])
 # family (and most functions in R from any package) work similarly:
 
 # 1 The first argument is an object you want to manipulate in some way, such as
-# a data frame.
+# a data frame, a variable, or a single value.
 
 # 2 The subsequent arguments describe what to do with the object,
 # using the variable names (without quotes). This can include dropping
@@ -252,7 +265,7 @@ print(gapminder [2,3])
 # rid of. In other words, we use select to remove columns from a data frame.
 
 countries_pop <- dplyr::select( 
-  gapminder,  # the first argument is always the data
+  gapminder,  # the first argument is always the dataframe 
   country, # the other arguments are column names you want to keep
   pop)  
 
@@ -273,10 +286,11 @@ select(gapminder, contains("y"))
 
 
 
-# CHALLENGE 1!
+# Challenge ----
 # Create an object called my_selection that uses the select() function 
 # to store from gapminder the country column and any columns that end with 
 # with "p"
+# Don't be shy about searching the internet for answers!!
 
 
 
@@ -302,7 +316,7 @@ select(gapminder, contains("y"))
 #         condition has to be met)  
 
 # NB the double equal sign (==) for the "equals" logical operator. A single
-# = sign is used a lot elsewhere in R.
+# = means something different in R.
 
 # filter on a single variable
 dplyr::filter(gapminder, year == 2007) # numeric variables don't need quotations 
@@ -315,7 +329,7 @@ dplyr::filter(gapminder,
 # would use the assingment operator (<-)
 Asia_2007 <- filter(gapminder, year == 2007 & continent == "Asia") 
 
-# now everything except for one continent
+# now filter for everything except for one continent
 filter(gapminder, continent != "Asia")
 
 # filter on three countries and one year
@@ -330,30 +344,31 @@ filter(
 filter(gapminder,
        year == 2002 & pop >= 100000000 | year == 2002 & pop <= 1000000)
 
-# These may seem like arbitrary tasks here, but you can imagine
-# how the filter and select functions could be used together to quickly
-# strip down your data to only to what's needed for a certain task, or to make
-# a certain table output for your work (similar to using pivot tables in Excel).
+# These may seem like arbitrary tasks here, but you can see how the filter and
+# select functions could be used together to quickly strip down your data to
+# only to what's needed for a certain task, or to make a certain table output
+# for your work (similar to using pivot tables in Excel).
 
 
-# CHALLENGE 2----
+# Challenge ----
 
-# Filter the gapminder dataframe to only
-# those countries that are either in Europe or Africa
-# and had a population between 5 and 10 million
-# in 2002
+# Filter the gapminder dataframe to only those countries that are either in
+# Europe or Africa and had a population between 5 and 10 million in 2002
+
+
+
 
 
 # MUTATE----
 
-# The mutate function creates a new column in your data
+# The mutate function creates a new column in your data.
 # You can either use your current variables to assign values of a new variable
 # or assign your whole data frame with the same value of a new variable
 
-# Let's add a column for gdp , where we multiply gdpPercap by population
-gapminder<- dplyr::mutate(
+# Let's add a column for gdp, where we multiply gdpPercap by population
+gapminder <- dplyr::mutate(
   gapminder,  # data we are mutating
-  gdp = gdpPercap * pop  # new column from old ones
+  gdp = gdpPercap * pop  # new column calculated from old ones
 )
 
 # let's see the gdp variable
@@ -372,13 +387,13 @@ mutate(
 )
 
 # And we can get more nuanced by using a case_when() function
-# This prevents us writing nested if_else() 
-# statements to specify multiple conditions (a relief to anyone who's ever had 
-# multiple IF statements within eachother in Excel).
+# This prevents us writing nested if_else() statements to specify multiple
+# conditions (a relief to anyone who's ever had a series of IF statements within
+# each other in Excel).
 
-# How the cae when function works is it will go though each logical argument for
-# each piece of input data (here, a row of data), and assign a value the first 
-# time a logical statement passes.
+# How the case_when function works is it will go though each logical argument
+# for each piece of input data (here, a row of data), and assign a value the
+# first time a logical statement passes.
 
 mutate(
   Asia_2007,  # data
@@ -387,7 +402,8 @@ mutate(
     lifeExp <= 55 ~ "bad",
     lifeExp <= 60 ~ "okay",
     lifeExp <= 70 ~ "good",
-    TRUE ~ "very_good" # This last category is equivalent to saying "else"
+    TRUE ~ "very_good" # This last outcome is applied to any observations that 
+                       # don't match any of the previous logical checks
   )
 )
 
@@ -399,6 +415,10 @@ mutate(
 # play around with the and/or operators to add logical conditions to a test "&"
 # "|")
 
+
+
+
+
 #ARRANGE----
 
 # This alters the order of the rows in your table according to some criteria
@@ -409,22 +429,25 @@ dplyr::arrange(
 )
 
 #And in reverse order (largest pop first):
-arrange(Asia_2007, desc(pop))  # descending
+arrange(Asia_2007, desc(pop))  # descending population
 
-# CHALLENGE 3!
+# Challenge ----
 # What happens if you arrange by a column containing characters rather 
 # than numbers? For example, the country column.
 
 
+
+
 # JOIN----
 
-# This is another verb that mirrors what you can find in SQL. There are 
-# several types of join, but we're going to look at the most common one:
-# the left_join(). This joins information from one table x to 
-# another table y by some key matching variable of our choice.
+# Joins are used to join two datasets together based on some shared values. The
+# equivalent in Excel will be VLOOKUP/HLOOKUP or INDEX+MATCH There are several
+# types of join, but we're going to look at the most common one: the
+# left_join(). This joins information from one table x to another table y by
+# some key matching variable of our choice.
 # 
-# Lets start by reading in some more data to use
-# we're going to use Freedom House scores.
+# Lets start by reading in some more data to use.
+# We're going to use Freedom House scores.
 # Freedom House rates countries on Civil Liberties and Political Rights,
 # and uses these scores to categorise countries as "Free", "Partly Free" or
 # "Not Free"
@@ -435,8 +458,6 @@ freedom_house <- read_csv("data/freedom_house.csv")
 glimpse(freedom_house)
 
 head(freedom_house)
-
-# We can see that two of the variable names have spaces in them
 
 # Now we're going to join this new data to our gapminder data. The key 
 # to matching these is in the country column, which exists in both datasets.
@@ -449,9 +470,10 @@ gapminder_join <- dplyr::left_join(
 
 glimpse(gapminder_join)
 
-# We can use multiple variables in the "by". Alternatively, we can
+# We can use multiple variables in the "by" argument. Alternatively, we can
 # leave it blank and R will guess what variable(s) to join on if there are
-# common variable names.
+# common variable names. However, it's generally good practice to be deliberate
+# and explicit about what variables you're joining on.
 
 # It's always good practice to make sure before joining two dataframes that the 
 # only variable names they share are for variables that express the same value.
@@ -463,7 +485,7 @@ rename(gapminder, GDP = gdp)
 
 # BIND----
 
-# Sometimes instead of joing two data frames horizontally (joining)
+# Sometimes instead of joinng two data frames horizontally (joining)
 # you might want to join them vertically (binding)
 # In other words, instead of adding variables/columns to your data frame,
 # you want to add more observations/rows to your data frame from a data frame 
@@ -494,12 +516,17 @@ View(gapminder_2007)
 # within the same family as select(), filter(), mutate(), arrange() and
 # *_join(). There are other functions that will be useful for your work 
 # and other ways of manipulating your data. We will look at some of these 
-# in the next workshop.
+# in the next workshop. You'll also find them as you explore you're own data 
+# with R, and come across tasks you want to do not covered in these workshops.
+
+# Learning R or any coding language is all about expanding your vocabulary, and 
+# getting more comfortable with troubleshooting errors, and more efficient at 
+# finding solutions to problems online.
 
 
 # PIPES ----
-# Alright great, we've seen how to manipulate our data a bit. But 
-# we've been doing it one discrete step at a time.
+# So  seen how to manipulate our data a bit. But we've been doing it one
+# discrete step at a time.
 # If you wanted to do some more complex data manipulations (using more than one
 # function on some data), your script might end up looking something like this:
 
@@ -510,11 +537,11 @@ gapminder_select <- select(gapminder_filter, -status, -year)
 gapminder_mutate <-
   mutate(gapminder_select, happiness = gdpPercap * civ_rights / 10000)
 
-# In other words, you might end up creating lots of intermediate 
-# objects - cluttering up your workspace and scripts, and filling up memory.
+# In other words, you might end up creating lots of intermediate objects -
+# cluttering up your workspace and making for tediously long scripts. 
 # 
 # You could do all this in one step by nesting each function inside 
-# the others, but that would be quite messy and hard to read.
+# the others, but that can become quite messy and hard to read.
 # This is because R essentially reads from the inner-most function out (like
 # functions in Excel or in another coding language).
 
@@ -523,11 +550,10 @@ gapminder_mutate <-
          happiness = gdpPercap * civ_rights / 10000)
 
 # The dplyr package has a very useful feature called "pipes" (written as %>%).
-# With pipes, you can take the output of one function
-# and use it as the first argument of the next function.
-# In other words, the pipe (%>%) lets us read our code from left-to-right 
-# (or from top-to-bottom) instead of reading from the inside out
-# without having to create lots of intermediate items.
+# With pipes, you can take the output of one function and use it as the first
+# argument of the next function. In other words, the pipe (%>%) lets us read our
+# code from left-to-right (or from top-to-bottom) instead of reading from the
+# inside out without having to create lots of intermediate items.
 # 
 # We can use the pipe to do the same thing we did above
 
@@ -553,9 +579,9 @@ head(gapminder_piped)
 # because they're part of the tidyverse (a large suite of packages designed to 
 # be compatible with dplyr).
 # SOME functions and data types wont take piped arguments, but as commonly used 
-# packages are updated this is vanishingly rare in R.
+# packages are updated this is increasingly rare in R.
 
-# CHALLENGE 5 ----
+# Challenge ----
 # Write a piped operation that creates a new dataframe called small_and_free
 # that takes the gapminder dataframe and:
 #   - left_join()s the freedom_house dataframe by country
@@ -565,9 +591,9 @@ head(gapminder_piped)
 #   - arrange()s the dataset by population (in ascending order)
 
 
-# SUMMARIES ----
-# Assuming we've now wrangled out data using the dplyr functions, we can do some 
-# quick, readable summarisation that's way better than the summary() function.
+# GROUP_BY and SUMMARISE ----
+# Assuming we've now wrangled out data using the dplyr functions, we can now
+# make some summaries of our data
 # So let's use our knowledge and some new functions to get the count
 # of countries per continent.
 
@@ -579,13 +605,12 @@ gapminder %>%  # take the dataframe
   dplyr::tally() %>%   # tally up (count) the number of instances
   dplyr::arrange(desc(n)) # arrange in descending order
 
-# The order of your functions is important - remember it's like a recipe. Don't
-# crack  the eggs on your cake just before serving. Do it near the beginning
-# somewhere, I guess (I'm not much of a baker - though I love Bakeoff).
+# The order of your functions is important, you have to group_by something
+# before you start summarising.
 # 
-# There's also a specific summarise() function that allows you to, well,
-# summarise. It basically lets us do everything which we could do with Excel 
-# Pivot tables.
+# There's also a specific summarise() function that allows you to get more
+# specific with your summaries, creating new variables for the summary output. 
+# It basically lets us do everything which we could do with Excel Pivot tables.
 
 # Say we want to count the number of countries in each continent
 # and their average population:
@@ -628,23 +653,23 @@ gapminder_join %>%
 
 
 # Challenge ----
-# Play around with group_b and summarise functions.
-# Find out how you would use group_by to get the country in each
-# continent with the lowest gdpPercap in 2007
+# Play around with group_by and summarise functions.
+# Find out how you would get the country in each continent with the lowest
+# gdpPercap in 2007
 
 
 
-#Some Other Useful Stuff----
+# Some Other Useful Stuff----
 
-# That's it for the first workshop. You should now feel comfortable with some
-# of the basics of R. The best way to learn it is to do it, so have a play
-# around with the gapminder dataset (or maybe try copy in some of your own 
-# data) and think about other ways you might try edit it using the functions
-# introduced above.
+# That's it for the first workshop. You should now feel comfortable with some of
+# the basics of R. The best way to learn it is to do it, so have a play around
+# with the gapminder dataset (or maybe try load in some of your own data) and
+# think about other ways you might try edit it using the functions introduced
+# above.
 
 # Throughout this course, we will point you to extra resources which you might 
 # find useful. These resources are not necessary to following the course, but
-# will contain useful reosurces for those who want to develop more R skills more
+# will contain useful resources for those who want to develop more R skills more
 # quickly.
 
 
@@ -690,20 +715,18 @@ readr::write_csv(gapminder_join, "data/gapminder2.csv")
 # can be hard to keep track of what packages each function comes from. This can
 # become an issue if two packages have the same function name for two functions
 # that do different things. For example, there are a number of packages that
-# have a function called "plot()" that will behave differently.
-# To avoid this, it's best practice to specify what package you want
-# R to use before calling the function. This means R knows exactly what to 
-# do AND it makes it easier for other people to QA your code.
-# For example, rather than just calling the function "filter()", we 
-# would type "dplyr::filter()
+# have a function called "plot()" that will behave differently. To avoid this,
+# it's best practice to specify what package you want R to use before calling
+# the function. This means R knows exactly what to do AND it makes it easier for
+# other people to QA your code. For example, rather than just calling the
+# function "filter()", we would type "dplyr::filter()
 
 dplyr::filter(gapminder, year== 2002)
 
-# Another benefit of calling these packages directly is that you don't need
-# to have loaded a package if you use this method, they just need to be 
-# installed. This can be very useful when 
-# you only need one function from a package as it reduces the risk of calling
-# the wrong function elsewhere in your script.
+# Another benefit of calling these packages directly is that you don't need to
+# have loaded a package if you use this method, they just need to be installed.
+# This can be very useful when you only need one function from a package as it
+# reduces the risk of calling the wrong function elsewhere in your script.
 
 
 ### 4. USING AND CREATING R PROJECTS ----
@@ -724,44 +747,66 @@ dplyr::filter(gapminder, year== 2002)
 # and select the "New Project" option. Then navigate to the folder you want 
 # your R project to sit in.
 
-# Some people love working with R projects, others don't.
+# R projects can be very useful for a number of reasons - it can make file paths
+# much less combersome, and working in an R project is quite similar to how you
+# end up working with Github and R.
 
-# 5. Styling your R studio ----
-# R studio provides a lot of options for changing the look and feel of R studio.
-# Go to the Ribbon menu at the top and click 'Tools' before going to 'Global
-# Options'. Here you can change the Appearance letting you change the font size
-# and theme of R studio. Personally, I'm a fan of the Cobalt theme, but you 
-# should play around with different themes and see which you find it easiest to
-# work in.
+# 5. Styling your R Studio ----
+# R studio provides a lot of options for changing the look and feel of R Studio.
+# Go to the Ribbon menu at the top and click 'Tools' and go to 'Global Options'.
+# Here you can change the Appearance letting you change the font size and theme
+# of R studio. Personally, I'm a fan of the Cobalt theme, but you should play
+# around with different themes and see which you find it easiest to work in.
+
 # You can also apply a margin to your r scripts. It can be useful to  have a
 # line that shows when you've hit 80 characters in a line. In code writing, it's
 # often considered best practice to limit a line of code to 80 characters. This
 # has its roots in very early coding languages which had 80 characters per line
-# as a hard limit, but has survived as a coding convention. It's okay to break 
-# this limit occasionally (for eg when calling a long file path), but generally
-# your code will be easier to read if you stick to the 80 character limit.
-# You can edit this in Global Options > > Code > Display > Show Margin, and 
-# setting "margin column" to 80.
+# as a hard limit. Though most modern languages have no such constraints any
+# more, this has survived as a coding convention. It's okay to break this limit
+# occasionally (for eg when calling a long file path), but generally your code
+# will be easier to read if you stick to the 80 character limit. You can edit
+# this in Global Options > Code > Display > Show Margin, and setting "margin
+# column" to 80.
+
+# 6. Keyboard Shortcuts ----
+# Similar to working in Microsoft Office software, R has a number of keyboard
+# shortcuts. These can make editing code much quicker and easier and are worth
+# developing as habits. Some classics of other softwares work in R studio:
+#   - Ctrl + C (copy)
+#   - Ctrl + V (paste)
+#   - Ctrl + X (cut)
+#   - Ctrl + Z (undo)
+
+# However, there are some that are very useful specifically for writing R code.
+# For example, Ctrl + Shift + / can be used to reflow comment - making commented
+# text better formatted. Ctrl + Shift + A can be used to reformat code. Try 
+# writing some functional (but messy) code and comments and try out these
+# shortcuts.
+
+# You can check out all the keyboard shortcuts by going to the ribbon menu at 
+# Tools > Keyboard Shortcuts Help (and even change your keyboard shortcuts in 
+# the modify space).
 
 # EXTRA MATERIAL----
 
 # Below are some extra sources you may want to look at if you want to explore
-# any of these concepts further. None of them are necessary if you
-# want to follow this intro to R course, but they may prove helpful as you
-# develop your R skills.
+# any of these concepts further. None of them are necessary if you want to
+# follow this intro to R course, but they may prove helpful as you develop your
+# R skills.
 
 # 1. https://www.datacamp.com/community/tutorials/functions-in-r-a-tutorial#what_are
 # This blog post goes into some more detail on the basics of R functions without
-# getting two technical. It also teaches you how to write your own
-# R functions and use them in your data analysis! (We will be looking at writing
-# functions in the third workshop)
+# getting two technical. It also teaches you how to write your own R functions
+# and use them in your data analysis! (We will be looking at writing functions
+# in the third workshop)
 
 
 # 2. 'Beginner R and RStudio training' by Matt Dray (DfE)
 # at the following web address
 # https://matt-dray.github.io/beginner-r-feat-pkmn/#5_get_data_in_and_look_at_it
-# This course borrows heavily 
+# This course borrows from Matt Dray's course. 
 
-# 3. A workhshop on the dplyr 5 verbs at the following web address:
+# 3. A workshop on the dplyr 5 verbs at the following web address:
 # https://teachingr.com/content/the-5-verbs-of-dplyr/the-5-verbs-of-dplyr-article.html
 
