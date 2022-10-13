@@ -29,19 +29,19 @@ library("testthat")
 # one project, or across your work. Writing functions can seem daunting at
 # first, but it's as simple as this: almost anything that you want R to do, that
 # R takes more than one step to do, can be written as a function that lets you
-# do it in one step.
+# do it in only one step.
 
 # Writing your own functions lets you wrap up processes that you repeat
 # throughout your work in a neat way, letting you write neater and shorter 
 # scripts. These functions can also be made to be flexible, so that they can be 
-# used in other settings which you might find them useful. And they can be made
-# robust, by adding in tests that make sure specific criteria are met by inputs
+# used in other settings which you might be useful. Further, they can be made
+# robust by adding in tests that make sure specific criteria are met by inputs
 # and outputs.
 
 # Let's begin with a simple example. Let's say we want to take the sum of two 
 # numbers, and the product of two numbers, and add them together.We would want
 # something like this: (x + y) + (x * y)
-# We can do that in R by explicilty setting out the equation in its entirity.
+# We can do that in R by explicitly setting out the equation in its entirity.
 
 x <- 17
 y <- 23
