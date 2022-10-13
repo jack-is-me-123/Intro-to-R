@@ -15,13 +15,6 @@
 
 # Load packages
 
-library(tidyverse) #manipulating data
-library(ggplot2) #creating plots
-library(readr) #reading in data
-library(ggthemes) # includes a range of extra themes for plots
-library(RColorBrewer) # includes a range of additional colour palettes
-library(plotly) # package for producing interactive plots
-
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
 
@@ -67,7 +60,7 @@ qplot(data = exams, x = math)
 qplot(data = exams, x = english, y = math)
 
 # When we create plots in R studio, they pop up in the bottom right. We can go 
-# back to our file viewer by select on it in the ribbon next to "Plots". We can
+# back to our file viewer by selecting it in the ribbon next to "Plots". We can
 # also export our plot (or copy it to our clipboard) with the "Export" drop down,
 # and we can remove our plots with the brush icon.
 
@@ -78,6 +71,7 @@ qplot(data = exams, x = english, y = math, colour = lunch)
 
 # Quick challenge:
 # Use the qplot() function to explore the gapminder dataset
+# Try using different amount of variable to explore relationships between data
 
 
 
@@ -148,8 +142,8 @@ ggplot(data = exams, aes(x=math)) +
   geom_density(fill = "#76a8d5", colour = "#76a8d5") +
   theme_classic()
 
-# Here we've just use dthe "classic" theme for simplicity, but there are loads
-# of fun themes out there. Some newspapers, businesses and government
+# Here we've just used the "classic" theme for simplicity, but there are loads
+# of fun themes out there. Some newspapers, businesses, and government
 # departments have even created themes that let them quickly produce graphics in
 # their own house style which you can borrow.
 
@@ -176,9 +170,9 @@ ggplot(data = exams, aes(x=math, y = english)) +
 # to plot one variable but for multiple groupings of our data. Let's see this in
 # action by plotting exam results for students based on whether they did a test
 # prep course. We can do this by adding a "group" argument to our aes().
-# What this does, it it will first group our data by whether a student had a
-# prep course, and then it will plot a density plot for every group (ie students
-# who have and students who have not completed a test prep course).
+# What this does is first group our data by whether a student had a prep course,
+# and then it will plot a density plot for every group (ie students who have and
+# students who have not completed a test prep course).
 
 ggplot(data = exams,
        aes(x=math, group = test_prep_course, fill = test_prep_course)) + 
@@ -253,6 +247,9 @@ ggplot(data = exams, aes(x = english, y = math,
 # others will only take numeric variable types. For example, we cannot use the
 # shape aesthetic to show a continuous numeric variable.
 
+# Some arguments can take both categorical or numeric variable types, and the 
+# behaviour will change depending on the type of input.
+
 
 # Exercise:
 # create a dotplot that shows the relationship between life expectancy and 
@@ -281,7 +278,7 @@ ggplot(data = exams, aes(x = english, y = math,
 
 # Another approach (or one that can be used in tandom with jittering) is to edit
 # the opacity of the points, so that overlapping points can be identified more
-# easily.
+# easily, similar to how we made overlapping density plots more visible.
 
 ggplot(data = exams, aes(x = english, y = math,
                          colour = test_prep_course)) +
@@ -290,7 +287,7 @@ ggplot(data = exams, aes(x = english, y = math,
   scale_colour_brewer(palette = "Set1")
 
 # Finally, if datasets are MUCH larger and these approaches don't prove useful, 
-# you can use a different type of plot, a density plot.
+# you can use a different type of plot, for example a 2d density plot.
 
 ggplot(data = exams, aes(x = english, y = math)) +
   geom_bin2d(bins = 50)
@@ -366,11 +363,10 @@ View(cities)
 # Barchart ----
 
 # We're now going to create a bar chart using the population variables. The
-# chart will show the difference in population from 2015 to 2016 by city
-
+# chart will show the difference in population from 2015 to 2016 by city.
 
 # you'll see in the environment that there are 63 observations (or rows) and 48
-# variables. This is quite a lot of columns so we should cut it down to a more 
+# variables. This is quite a lot of columns so we can cut it down to a more 
 # manageable size to do our analysis by selecting only the columns we want to 
 # use. 
 
@@ -383,29 +379,33 @@ View(cities)
 # Also note that, because our column headers contained spaces, we need to quote
 # using backticks `var name with spaces`. Another options would be to remove 
 # them using functions like janitor::clean_names(cities)  
+# However, it can be useful to use the back ticks, as it lets us have variable
+# names that will read better as parts of charts (though we can also label our
+# axes instead)
+
 
 cities_pop <- cities %>%
   select(City, `Population 2013` : `Population 2016`) %>%
-  mutate(diff = `Population 2016` - `Population 2015`) %>%
-  filter(diff > 5000)
+  mutate(`population differece` = `Population 2016` - `Population 2015`) %>%
+  filter(`population differece` > 5000)
 
 
 #plot a bar chart city population against city
-ggplot(data = cities_pop, aes(x = City, y = diff))+
+ggplot(data = cities_pop, aes(x = City, y = `population differece`))+
   geom_bar(stat = "identity")
 
 # or we could have achieved all this by using a pipe
 cities %>%
-  mutate(diff = `Population 2016`-`Population 2015`) %>%
-  filter(diff > 5000) %>%
-  ggplot(aes(x = City, y = diff))+
+  mutate(`population differece` = `Population 2016`-`Population 2015`) %>%
+  filter(`population differece` > 5000) %>%
+  ggplot(aes(x = City, y = `population differece`))+
   geom_bar(stat = "identity")
 
 # We can add a title with the labs() function, adding our title after the
 # 'title' argument. We can add subtitles and captions as well.
 # We can label our x and y axes with the xlab() and ylab() functions.
 
-ggplot(data = cities_pop, aes(x = City, y = diff)) +
+ggplot(data = cities_pop, aes(x = City, y = `population differece`)) +
   geom_bar(stat = "identity") +
   theme_classic() +
   labs(title = "2015-2016 Population changes by city",
@@ -417,15 +417,15 @@ ggplot(data = cities_pop, aes(x = City, y = diff)) +
 #This is starting to look better but we can still add some changes. 
 # Next we'll add some colours, and reorder the bars so that
 # they are descending. We can do this by using the reorder() function on our 
-# City variable, telling it to reorder by our `diff` variable. We use a minus 
-# sign in front of the `diff` variable to specify we want it in descending order
+# City variable, telling it to reorder by our ``population differece`` variable. We use a minus 
+# sign in front of the ``population differece`` variable to specify we want it in descending order
 # The text on the axis is a bit bunched up as well so we can try fix that by
 # rotating our text.
 # Finally we can change the colour of our bars with the "fill" argument inside
 # the geom_bar function.
 
 my_chart <-
-  ggplot(data = cities_pop, aes(x = reorder(City,-diff), y = diff)) +
+  ggplot(data = cities_pop, aes(x = reorder(City,-`population differece`), y = `population differece`)) +
   geom_bar(stat = "identity", fill = "light blue") +
   theme_classic() +
   labs(title = "2015-2016 Population changes by city",
@@ -440,10 +440,14 @@ my_chart
 #Challenge ----
 
 # create a barchart that shows the cities that have a mean house price in
-# 2017 of less than ?145,000.
-# You might noice that the mean house price variable name is really long. 
-# Let's change that first to make the chart easier to write using the 
-# rename function in dplyr
+# 2017 of less than £145,000.
+
+
+
+# Now make another chart that shows the cities that have the largest changes
+# in house prices over the time period. Try out different charts that could do 
+# this. Get creative with different types of plots (it can be useful to sketch
+# out on a piece of paper how you want your final chart to look).
 
 
 # Bridges to interactive plots ----
@@ -468,7 +472,7 @@ country_plot <- gapminder %>% filter(year == 2007) %>%
 # into an interactive chart
 ggplotly(country_plot)
 
-# We can now explore our data interatively. However, while ggplotly can be used 
+# We can now explore our data interactively. However, while ggplotly can be used 
 # to quickly convert static plots to interactive plots, to truly explore the
 # depth of what can be achieved with interactive plots, it's better to build 
 # interactive plots from scratch. 
@@ -477,6 +481,9 @@ ggplotly(country_plot)
 
 # Create other plots with ggplot2 exploring the gapminder data set and see if 
 # and how the ggplotly() function translates them into interactive charts.
+
+
+
 
 
 # Extra Material ----

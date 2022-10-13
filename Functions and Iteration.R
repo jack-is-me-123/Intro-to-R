@@ -83,7 +83,7 @@ do_a_thing(x = 2.45, y = 394.85)
 
 
 
-# Challenge 1:
+# Challenge:
 # write a function that takes the sum of three values, and squares them.
 
 
@@ -340,6 +340,18 @@ exams <- exams %>%
 
 exams %>% filter(reading_difficulty == "FLAG")
 
+# Finally, we can add defaults to our arguments that make our function easier 
+# to use at first instance, but still keep the same flexibility. For example,
+# we might set a default level for the ratio for the reading flag to trigger of
+# 1.5. Users can then leave this argument blank and use the default setting of 
+# the ratio argument.
+
+reading_flag_3 <- function(math_score, english_score, history_score, 
+                           ratio = 1.5) {
+  if_else(math_score >= ratio * english_score & 
+            math_score >= ratio * history_score, "FLAG", "no flag")
+}
+
 # When you write your own functions, you should think about how you can increase
 # the flexibility of them so they can be useful to you and your team members in
 # more circumstances.
@@ -358,8 +370,8 @@ exams %>% filter(reading_difficulty == "FLAG")
 # for loops ----
 
 # for loops are constructed by specifying a series of values you want an
-# operation to be repeated, and the operation you want done. Let's look at a
-# simple for loop
+# operation to be repeated over, and the operation you want done. Let's look at 
+# a simple for loop
 
 for(i in 1:10){ # for i (every value) between 1 and 10
   print(i * 2) # print the product of that value multiplied by 2
@@ -378,7 +390,7 @@ for(i in some_numbers){
   more_numbers[i] <- i * 2
 }
 
-# finally, we can add some dependency to this for loop, for example only
+# next, let's add some dependency to this for loop, for example only
 # multiplying numbers that are divisible by 2. We can do this with the if() and 
 # else() functions nested within the for loop
 
@@ -422,14 +434,14 @@ for(i in some_numbers){
 
 # apply functions ----
 
-# apply functions are an alternative to for loops, which can be used for iterating
-# a function or a set of functions over multiple objects - for example, all 
-# elements in a list. 
+# apply functions are an alternative to for loops, which can be used for 
+# iterating a function or a set of functions over multiple objects - for example 
+# all elements in a list. 
 
 # Let's demonstrate this by using some apply functions to explore the exams
 # data set above.
 
-# When R holds data as a data.frame, it's as if R is holding it in memory as a 
+# When R holds data as a data.frame, R is actually holding it in memory as a 
 # list of vectors, where each vector is a variable. We can therefore use lapply()
 # to apply the same function to all the variables, as lapply() is designed to 
 # iterate a function over a list
@@ -516,19 +528,22 @@ exams %>%
 
 
 
-# apply or for loops? ----
+# apply function or for loops? ----
 
 # There are no hard and fast rules for when for loops are preferable to apply
 # functions or visa-versa. Some coders will become more comfortable with one and
 # will generally lean towards it - coders who learn Python before R are usually
-# happier using for loops as their application is very similar in Python. 
+# happier using for loops as their application is very similar in Python, while 
+# apply functions are designed to integrate well with tidyverse R principles and
+# don't always have a like-for-like comparison in other coding languages.
 
 # Some things to consider: 
 # The advantage of for loops are that they typically provide more flexibility,
 # particularly for advanced coders. In for loops, it is easier to implement
 # conditional behaviour, where behaviour changes for different items in the list
 # based on some condition, or where the outcome of one loop becomes an input
-# into the next for loop. Their disadvantage comes in the fact that they can
+# into the next for loop. We did this above when we had the loop treate odd and
+# even numbers differently. Their disadvantage comes in the fact that they can
 # look more complicated for beginner coders (as they are quite different to
 # tidyverse coding principles), and can take more lines of code to do the same
 # thing - particularly for simpler tasks. Also, they cannot be neatly
@@ -577,13 +592,13 @@ max_temp
 # This workshop has given a VERY cursory introduction to building your own 
 # functions, building in some unit testing for them, and a very basic
 # introduction to how to iterate code efficiently using for loops and apply 
-# functions. However, this has barely scratched the surface of what can be
+# functions. However, this has just scratched the surface of what can be
 # achieved with these coding principles. Some good workshops are recommended
 # below which go into  more detail on these topics.
 
 # Extra Material ----
 
-# 1)A good, high-level workshop of function writing and for loops can be found
+# 1) A good, high-level workshop of function writing and for loops can be found
 # here: https://www.earthdatascience.org/courses/earth-analytics/automate-science-workflows/write-function-r-programming/
 
 
