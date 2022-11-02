@@ -59,10 +59,10 @@ qplot(data = exams, x = math)
 # Let's see what happens when we run qplot on two variables
 qplot(data = exams, x = english, y = math)
 
-# When we create plots in R studio, they pop up in the bottom right. We can go 
+# When we create plots in R studio, they pop up in the bottom right. We can go
 # back to our file viewer by selecting it in the ribbon next to "Plots". We can
-# also export our plot (or copy it to our clipboard) with the "Export" drop down,
-# and we can remove our plots with the brush icon.
+# also export our plot (or copy it to our clipboard) with the "Export" drop
+# down, and we can remove our plots with the brush icon.
 
 # R assumes we want a scatter plot, which is a useful way for us to see how 
 # two variables interact.
@@ -169,9 +169,9 @@ ggplot(data = exams, aes(x=math, y = english)) +
 # The geom_histogram and geom_density functions are quite flexible, allowing us
 # to plot one variable but for multiple groupings of our data. Let's see this in
 # action by plotting exam results for students based on whether they did a test
-# prep course. We can do this by adding a "group" argument to our aes().
-# What this does is first group our data by whether a student had a prep course,
-# and then it will plot a density plot for every group (ie students who have and
+# prep course. We can do this by adding a "group" argument to our aes(). What
+# this does is first group our data by whether a student had a prep course, and
+# then it will plot a density plot for every group (ie students who have and
 # students who have not completed a test prep course).
 
 ggplot(data = exams,
@@ -196,11 +196,11 @@ ggplot(data = exams,
 # tidy dataset into a longer dataset. To do this, we're going to play around
 # with piping data manipulations into a ggplot() call.
 
-# What we want to do is use the pivot_longer() function we looked at in the Tidy Data
-# workshop. We can use this to "lengthen" the data, collapsing the 3 test score
-# variables into 1 variable, with the effect of tripling the length of the data
-# set. We can then use this pivoted data to run a density plot that's grouped by
-# subject.
+# What we want to do is use the pivot_longer() function we looked at in the Tidy
+# Data workshop. We can use this to "lengthen" the data, collapsing the 3 test
+# score variables into 1 variable, with the effect of tripling the length of the
+# data set. We can then use this pivoted data to run a density plot that's
+# grouped by subject.
 
 exams %>% 
   pivot_longer(cols = 4:6, names_to = "subject", values_to = "score") %>%
@@ -366,9 +366,9 @@ View(cities)
 # chart will show the difference in population from 2015 to 2016 by city.
 
 # you'll see in the environment that there are 63 observations (or rows) and 48
-# variables. This is quite a lot of columns so we can cut it down to a more 
-# manageable size to do our analysis by selecting only the columns we want to 
-# use. 
+# variables. This is quite a lot of columns so we can cut it down to a more
+# manageable size to do our analysis by selecting only the columns we want to
+# use.
 
 # The following code uses dplyr to create a column which shows the difference 
 # between the 2015 and 2016 populations. We're also only interested in cities 
@@ -378,7 +378,7 @@ View(cities)
 # Note the shortcut syntax ':' which means select all the columns from : to
 # Also note that, because our column headers contained spaces, we need to quote
 # using backticks `var name with spaces`. Another options would be to remove 
-# them using functions like janitor::clean_names(cities)  
+# them using functions like janitor::clean_names(cities).
 # However, it can be useful to use the back ticks, as it lets us have variable
 # names that will read better as parts of charts (though we can also label our
 # axes instead)
@@ -414,15 +414,14 @@ ggplot(data = cities_pop, aes(x = City, y = `population differece`)) +
   xlab("City") +
   ylab("Difference between 2015 and 2016")
 
-#This is starting to look better but we can still add some changes. 
-# Next we'll add some colours, and reorder the bars so that
-# they are descending. We can do this by using the reorder() function on our 
-# City variable, telling it to reorder by our ``population differece`` variable. We use a minus 
-# sign in front of the ``population differece`` variable to specify we want it in descending order
-# The text on the axis is a bit bunched up as well so we can try fix that by
-# rotating our text.
-# Finally we can change the colour of our bars with the "fill" argument inside
-# the geom_bar function.
+# This is starting to look better but we can still add some changes. Next we'll
+# add some colours, and reorder the bars so that they are descending. We can do
+# this by using the reorder() function on our City variable, telling it to
+# reorder by our ``population differece`` variable. We use a minus sign in front
+# of the ``population differece`` variable to specify we want it in descending
+# order The text on the axis is a bit bunched up as well so we can try fix that
+# by rotating our text. Finally we can change the colour of our bars with the
+# "fill" argument inside the geom_bar function.
 
 my_chart <-
   ggplot(data = cities_pop, aes(x = reorder(City,-`population differece`), y = `population differece`)) +
@@ -465,8 +464,8 @@ country_plot <- gapminder %>% filter(year == 2007) %>%
                   ggplot( aes(x = gdpPercap, y = lifeExp, fill = continent, 
                               color = continent, size = pop)) +
                   geom_point() +
-                  scale_x_log10() # this converts the x axis to a log scale to create an easier
-                                  # to read chart.
+                  scale_x_log10() # this converts the x axis to a log scale to 
+                                  # create an easier to read chart.
 
 # now let's take our country_plot and use the ggplotly() function to convert it
 # into an interactive chart
