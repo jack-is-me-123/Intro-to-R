@@ -41,7 +41,7 @@ library("testthat")
 # Let's begin with a simple example. Let's say we want to take the sum of two 
 # numbers, and the product of two numbers, and add them together.We would want
 # something like this: (x + y) + (x * y)
-# We can do that in R by explicitly setting out the equation in its entirity.
+# We can do that in R by explicitly setting out the equation in its entirety.
 
 x <- 17
 y <- 23
